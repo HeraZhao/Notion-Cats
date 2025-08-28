@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Notion Cats JSON</title>
+</head>
+<body>
+<pre id="out">Loading...</pre>
+
+<script>
+(async () => {
+  // 把你的公开 Notion 页面地址填进来 ↓↓↓
+  const url = 'https://herazhao.notion.site/257165bc50ec805e98a7c15811ab799c';
+  const html = await fetch(url).then(r => r.text());
+  const rows = [...html.matchAll(/<tr.*?<td.*?>(.*?)<\/td>.*?<td.*?>(.*?)<\/td>/g)];
+  const dict = {};
+  rows.forEach(([_, c1, c2]) => {
+    dict[c1] = dict[c1] || [];
+    dict[c1].push(c2);
+  });
+  document.getElementById('out').textContent = JSON.stringify(dict, null, 2);
+})();
+</script>
+</body>
+</html>
